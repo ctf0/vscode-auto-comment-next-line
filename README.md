@@ -1,0 +1,1 @@
+# vscode-auto-line-comment
