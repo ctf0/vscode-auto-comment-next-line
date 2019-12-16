@@ -3,6 +3,8 @@
     "displayName": "auto-comment-next-line",
     "description": "auto comment next line when pressing enter",
     "version": "0.0.1",
+    "publisher": "ctf0",
+    "repository": "https://github.com/ctf0/vscode-auto-comment-next-line",
     "engines": {
         "vscode": "^1.41.0"
     },
@@ -12,7 +14,6 @@
     "activationEvents": [
         "*"
     ],
-    "repository": "https://github.com/ctf0/vscode-auto-comment-next-line",
     "main": "./extension.js",
     "contributes": {
         "configuration": {
