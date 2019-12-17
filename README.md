@@ -4,14 +4,26 @@ i've tried every possible ext that add this feature but sadly all have its own i
 - check if previous line started with a comment char.
 - if so, execute the `editor.action.commentLine` command.
 
-## Config∫
+## Config
 
 - single line comment chars list
     - until https://github.com/microsoft/vscode/issues/580 is solved, we have to use the manual way :disappointed:
 
 ```json
 "auto-comment-next-line.list": [
-    "//",
-    "#"
+     {
+        "char": "//",
+        "languages": [
+            "php",
+            "js",
+            "jsonc"
+        ]
+    },
+    {
+        "char": "#",
+        "languages": [
+            "python"
+        ]
+    }
 ]
 ```
