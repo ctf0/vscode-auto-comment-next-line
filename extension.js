@@ -1,14 +1,15 @@
 const vscode = require('vscode')
+let charsList
 
 /**
  * @param {vscode.ExtensionContext} context
  */
 function activate(context) {
-    let charsList = getConfig().list
+    readConfig()
 
     vscode.workspace.onDidChangeConfiguration((e) => {
         if (e.affectsConfiguration('auto-comment-next-line')) {
-            charsList = getConfig().list
+            readConfig()
         }
     })
 
@@ -40,6 +41,10 @@ function hasACommentedLine(list, txt, lang) {
 
 function getConfig() {
     return vscode.workspace.getConfiguration('auto-comment-next-line')
+}
+
+function readConfig() {
+    return charsList = getConfig().list
 }
 
 exports.activate = activate

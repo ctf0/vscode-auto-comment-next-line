@@ -2,7 +2,7 @@
     "name": "auto-comment-next-line",
     "displayName": "Auto Comment Next Line",
     "description": "auto comment next line when pressing enter",
-    "version": "0.0.2",
+    "version": "0.0.3",
     "publisher": "ctf0",
     "repository": "https://github.com/ctf0/vscode-auto-comment-next-line",
     "engines": {
@@ -12,7 +12,7 @@
         "Other"
     ],
     "activationEvents": [
-        "*"
+        "onCommand:type"
     ],
     "main": "./extension.js",
     "contributes": {
@@ -26,7 +26,7 @@
                             "char": "//",
                             "languages": [
                                 "php",
-                                "js",
+                                "javascript",
                                 "jsonc"
                             ]
                         },

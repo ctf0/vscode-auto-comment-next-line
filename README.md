@@ -2,7 +2,7 @@ i've tried every possible ext that add this feature but sadly all have its own i
 
 - check if pressed key is "enter".
 - check if previous line started with a comment char.
-- if so, execute the `editor.action.commentLine` command.
+- execute the `editor.action.commentLine` command.
 
 ## Config
 
