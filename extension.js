@@ -1,3 +1,4 @@
+const { EOL } = require('os')
 const vscode = require('vscode')
 let charsList
 
@@ -21,7 +22,7 @@ function activate(context) {
             let content = e.contentChanges
             let lastChange = content[content.length - 1]
 
-            if (content.length && lastChange.text.startsWith('\n')) {
+            if (content.length && lastChange.text.startsWith(EOL)) {
                 let prevLine = lastChange.range.start.line
                 let txt = doc.lineAt(prevLine).text.trim()
 
