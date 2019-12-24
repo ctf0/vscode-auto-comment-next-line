@@ -17,7 +17,7 @@ function activate(context) {
     vscode.workspace.onDidChangeTextDocument((e) => {
         let doc = e.document
 
-        if (doc) {
+        if (doc && doc == vscode.window.activeTextEditor.document) {
             let lang = doc.languageId
             let content = e.contentChanges
             let lastChange = content[content.length - 1]
