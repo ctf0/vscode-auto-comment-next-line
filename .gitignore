@@ -1,3 +1,4 @@
 node_modules
 .history
 yarn.*
+.DS_Store

@@ -1,5 +1,6 @@
 const { EOL } = require('os')
 const vscode = require('vscode')
+const escapeStringRegexp = require('escape-string-regexp')
 let charsList
 
 /**
@@ -14,24 +15,21 @@ function activate(context) {
         }
     })
 
-    vscode.workspace.onDidChangeTextDocument((e) => {
-        let doc = e.document
-
-        if (doc && doc == vscode.window.activeTextEditor.document) {
-            let lang = doc.languageId
-            let content = e.contentChanges
-            let lastChange = content[content.length - 1]
-
-            if (content.length && lastChange.text.startsWith(EOL)) {
-                let prevLine = lastChange.range.start.line
-                let txt = doc.lineAt(prevLine).text.trim()
-
-                if (hasACommentedLine(charsList, txt, lang)) {
-                    vscode.commands.executeCommand('editor.action.commentLine')
-                }
-            }
+    for (const item of charsList) {
+        for (const lang of item.languages) {
+            vscode.languages.setLanguageConfiguration(lang, {
+                onEnterRules: [
+                    {
+                        beforeText: new RegExp(escapeStringRegexp(item.char)),
+                        action: {
+                            indentAction: 0,
+                            appendText: `${item.char} `
+                        }
+                    }
+                ]
+            })
         }
-    })
+    }
 }
 
 function hasACommentedLine(list, txt, lang) {
