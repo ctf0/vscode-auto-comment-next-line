@@ -6,12 +6,12 @@ let charsList
 /**
  * @param {vscode.ExtensionContext} context
  */
-function activate(context) {
-    readConfig()
+async function activate(context) {
+    await readConfig()
 
-    vscode.workspace.onDidChangeConfiguration((e) => {
+    vscode.workspace.onDidChangeConfiguration(async (e) => {
         if (e.affectsConfiguration('auto-comment-next-line')) {
-            readConfig()
+            await readConfig()
         }
     })
 
@@ -32,18 +32,8 @@ function activate(context) {
     }
 }
 
-function hasACommentedLine(list, txt, lang) {
-    return list.some((item) => {
-        return txt.startsWith(item.char) && item.languages.some((langId) => langId == lang)
-    })
-}
-
-function getConfig() {
-    return vscode.workspace.getConfiguration('auto-comment-next-line')
-}
-
-function readConfig() {
-    return charsList = getConfig().list
+async function readConfig() {
+    return charsList = await vscode.workspace.getConfiguration('auto-comment-next-line').list
 }
 
 exports.activate = activate

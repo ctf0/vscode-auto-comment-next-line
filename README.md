@@ -15,7 +15,7 @@ i've tried every possible ext that add this feature but sadly all have its own i
         "char": "//",
         "languages": [
             "php",
-            "js",
+            "javascript",
             "jsonc"
         ]
     },
