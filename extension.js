@@ -1,12 +1,8 @@
 const { EOL } = require('os')
 const vscode = require('vscode')
-const escapeStringRegexp = require('escape-string-regexp')
-let charsList
+let charsList = []
 
-/**
- * @param {vscode.ExtensionContext} context
- */
-async function activate(context) {
+async function activate() {
     await readConfig()
 
     vscode.workspace.onDidChangeConfiguration(async (e) => {
@@ -15,28 +11,33 @@ async function activate(context) {
         }
     })
 
-    for (const item of charsList) {
-        for (const lang of item.languages) {
-            vscode.languages.setLanguageConfiguration(lang, {
-                onEnterRules: [
-                    {
-                        beforeText: new RegExp(escapeStringRegexp(item.char)),
-                        action: {
-                            indentAction: 0,
-                            appendText: `${item.char} `
-                        }
-                    }
-                ]
-            })
+    vscode.workspace.onDidChangeTextDocument((e) => {
+        let { document, contentChanges } = e
+
+        if (e && document == vscode.window.activeTextEditor.document) {
+            let lastChange = contentChanges[contentChanges.length - 1]
+
+            if (contentChanges.length && lastChange.text.startsWith(EOL)) {
+                let prevLine = lastChange.range.start.line
+                let txt = document.lineAt(prevLine).text.trim()
+
+                if (hasACommentedLine(txt, document.languageId)) {
+                    vscode.commands.executeCommand('editor.action.commentLine')
+                }
+            }
         }
-    }
+    })
+}
+
+function hasACommentedLine(txt, lang) {
+    return charsList.some((item) => {
+        return txt.startsWith(item.char) && item.languages.some((langId) => langId == lang)
+    })
 }
 
 async function readConfig() {
     return charsList = await vscode.workspace.getConfiguration('auto-comment-next-line').list
 }
-
-exports.activate = activate
 
 function deactivate() { }
 
