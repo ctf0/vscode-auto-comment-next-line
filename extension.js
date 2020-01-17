@@ -2,7 +2,7 @@ const { EOL } = require('os')
 const vscode = require('vscode')
 let charsList = []
 
-async function activate() {
+async function activate(context) {
     await readConfig()
 
     vscode.workspace.onDidChangeConfiguration(async (e) => {
@@ -11,22 +11,24 @@ async function activate() {
         }
     })
 
-    vscode.workspace.onDidChangeTextDocument((e) => {
-        let { document, contentChanges } = e
+    context.subscriptions.push(
+        vscode.workspace.onDidChangeTextDocument((e) => {
+            let { document, contentChanges } = e
 
-        if (e && document == vscode.window.activeTextEditor.document) {
-            let lastChange = contentChanges[contentChanges.length - 1]
+            if (e && document == vscode.window.activeTextEditor.document) {
+                let lastChange = contentChanges[contentChanges.length - 1]
 
-            if (contentChanges.length && lastChange.text.startsWith(EOL)) {
-                let prevLine = lastChange.range.start.line
-                let txt = document.lineAt(prevLine).text.trim()
+                if (contentChanges.length && lastChange.text.startsWith(EOL)) {
+                    let prevLine = lastChange.range.start.line
+                    let txt = document.lineAt(prevLine).text.trim()
 
-                if (hasACommentedLine(txt, document.languageId)) {
-                    vscode.commands.executeCommand('editor.action.commentLine')
+                    if (hasACommentedLine(txt, document.languageId)) {
+                        vscode.commands.executeCommand('editor.action.commentLine')
+                    }
                 }
             }
-        }
-    })
+        })
+    )
 }
 
 function hasACommentedLine(txt, lang) {
