@@ -13,17 +13,20 @@ async function activate(context) {
 
     context.subscriptions.push(
         vscode.workspace.onDidChangeTextDocument((e) => {
-            let { document, contentChanges } = e
+            if (e) {
+                let { document, contentChanges } = e
+                let editor = vscode.window.activeTextEditor
 
-            if (e && document == vscode.window.activeTextEditor.document) {
-                let lastChange = contentChanges[contentChanges.length - 1]
+                if (editor && document == editor.document) {
+                    let lastChange = contentChanges[contentChanges.length - 1]
 
-                if (contentChanges.length && lastChange.text.startsWith(EOL)) {
-                    let prevLine = lastChange.range.start.line
-                    let txt = document.lineAt(prevLine).text.trim()
+                    if (contentChanges.length && lastChange.text.startsWith(EOL)) {
+                        let prevLine = lastChange.range.start.line
+                        let txt = document.lineAt(prevLine).text.trim()
 
-                    if (hasACommentedLine(txt, document.languageId)) {
-                        vscode.commands.executeCommand('editor.action.commentLine')
+                        if (hasACommentedLine(txt, document.languageId)) {
+                            vscode.commands.executeCommand('editor.action.commentLine')
+                        }
                     }
                 }
             }
