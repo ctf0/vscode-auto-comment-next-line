@@ -19,3 +19,7 @@
 ## 0.0.7
 
 - undo [language-configuration-api](https://code.visualstudio.com/api/language-extensions/language-configuration-guide) which is unreliable
+
+## 0.1.0
+
+- fix package settings name

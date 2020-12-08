@@ -1,12 +1,14 @@
-const { EOL } = require('os')
+const {EOL} = require('os')
 const vscode = require('vscode')
+const PACKAGE_NAME = 'autoCommentNextLine'
+
 let charsList = []
 
 async function activate(context) {
     await readConfig()
 
     vscode.workspace.onDidChangeConfiguration(async (e) => {
-        if (e.affectsConfiguration('auto-comment-next-line')) {
+        if (e.affectsConfiguration(PACKAGE_NAME)) {
             await readConfig()
         }
     })
@@ -14,7 +16,7 @@ async function activate(context) {
     context.subscriptions.push(
         vscode.workspace.onDidChangeTextDocument((e) => {
             if (e) {
-                let { document, contentChanges } = e
+                let {document, contentChanges} = e
                 let editor = vscode.window.activeTextEditor
 
                 if (editor && document == editor.document) {
@@ -41,7 +43,8 @@ function hasACommentedLine(txt, lang) {
 }
 
 async function readConfig() {
-    return charsList = await vscode.workspace.getConfiguration('auto-comment-next-line').list
+    let config = await vscode.workspace.getConfiguration(PACKAGE_NAME)
+    charsList = config.list
 }
 
 function deactivate() { }
